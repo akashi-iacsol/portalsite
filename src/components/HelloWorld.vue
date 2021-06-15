@@ -9,8 +9,8 @@ export default {
     return {
       people: [],
       params: "",
-      samAccountName: "yuusuke_akashi",
-      password: "p@ssw0rd"
+      samAccountName: "",
+      password: ""
     };
   },
   methods: {
