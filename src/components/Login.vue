@@ -16,23 +16,23 @@
       <tr>
         <td>ユーザ名:</td>
         <td>
-          <input v-model="samAccountName" v-on:keyup.enter="login" />
+          <input v-model="samAccountName" @keyup.enter="login" />
         </td>
       </tr>
       <tr>
         <td>パスワード:</td>
         <td>
-          <input v-model="password" type="password" v-on:keyup.enter="login" />
+          <input v-model="password" type="password" @keyup.enter="login" />
         </td>
       </tr>
     </table>
 
     <br />
     <div>
-      <button v-on:click="login">ログイン</button>
+      <button @click="login">ログイン</button>
     </div>
-    {{employeeName}}
-    {{employeeOU}}
+    {{userName}}
+    {{userOU}}
     {{errorCode}}
   </div>
 </template>
@@ -42,8 +42,8 @@ import axios from "axios";
 export default {
   data() {
     return {
-      employeeName: "",
-      employeeOU: [],
+      userName: "",
+      userOU: [],
       errorCode: "",
       params: "",
       samAccountName: "",
@@ -61,17 +61,17 @@ export default {
         .post(path, this.params)
         .then((response) => {
           if (response.data[0][0] !== "error") {
-            this.employeeName = response.data.find(
+            this.userName = response.data.find(
               (item) => item[0] === "DisplayName"
             )[1];
-            this.employeeOU = response.data.find((item) => item[0] === "OU");
-            this.employeeOU.shift();
+            this.userOU = response.data.find((item) => item[0] === "OU");
+            this.userOU.shift();
             this.errorCode = "";
             this.isError = false;
           } else {
             this.errorCode = response.data[1][0];
-            this.employeeName = "";
-            this.employeeOU = [];
+            this.userName = "";
+            this.userOU = [];
             this.isError = true;
           }
         })
