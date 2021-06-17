@@ -42,6 +42,7 @@
 <script>
 import axios from "axios";
 import store from "../store/index.js";
+
 export default {
   name: "Login",
   store,
@@ -53,27 +54,26 @@ export default {
     };
   },
   methods: {
-    login() {
+    login: async function () {
       const path = "http://localhost:8080/api/auth";
       this.params = new URLSearchParams();
       this.params.append("samAccountName", this.userID);
       this.params.append("password", this.password);
-      axios
+      await axios
         .post(path, this.params)
-        .then((response) => {
-          if (response.data[0][0] !== "error") {
-            let attributeArray = [];
-
-            attributeArray = response.data.find(
-              (item) => item[0] === "DisplayName"
-            );
-            this.userName = attributeArray[1];
-
-            attributeArray = response.data.find((item) => item[0] === "OU");
-            this.userOU = attributeArray.slice(1, attributeArray.length);
-
+        .then((res) => {
+          if (res.data[0][0] !== "error") {
             this.isLogin = true;
             this.isError = false;
+
+            let attributeArray = [];
+
+            attributeArray = res.data.find((item) => item[0] === "DisplayName");
+            this.userName = attributeArray[1];
+
+            attributeArray = res.data.find((item) => item[0] === "OU");
+            this.userOU = attributeArray.slice(1, attributeArray.length);
+            // this.getDB();
             this.$router.push("/");
           } else {
             this.userName = "";
@@ -150,14 +150,14 @@ tr {
   height: 50px;
 }
 .container {
-    -webkit-transform:translate(-50%, -50%);
-    -moz-transform:translate(-50%, -50%);
-    -ms-transform:translate(-50%, -50%);
-    -o-transform:translate(-50%, -50%);
-    transform:translate(-50%, -50%);
-    position:absolute;
-    top:50%;
-    left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  position: absolute;
+  top: 50%;
+  left: 50%;
 }
 .box {
   display: inline-block;
