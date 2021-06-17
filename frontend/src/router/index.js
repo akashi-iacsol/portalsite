@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import MasterMaintenance from '../views/MasterMaintenance.vue'
 import Login from '../views/Login.vue'
-import store from "../store/index.js";
+// import store from "../store/index.js";
 
 
 Vue.use(VueRouter)
@@ -28,7 +28,12 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login
-  }
+  },
+  { 
+    path: '/empMaintenance',
+    name: 'EmpMaintenance',
+    component: () => import ('../views/EmpMaintenance.vue')
+  },
 ]
 
 const router = new VueRouter({
@@ -37,12 +42,12 @@ const router = new VueRouter({
   routes
 })
 
-router.beforeEach((to, from, next) => {
-  if (to.path !== '/login' && !store.state.isLogin) {
-    next('/login')
-  } else {
-    next();
-  }
-})
+// router.beforeEach((to, from, next) => {
+//   if (to.path !== '/login' && !store.state.isLogin) {
+//     next('/login')
+//   } else {
+//     next();
+//   }
+// })
 
 export default router
