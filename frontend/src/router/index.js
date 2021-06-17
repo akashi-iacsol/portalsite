@@ -16,6 +16,12 @@ const routes = [
     name: 'MasterMaintenance',
     component: MasterMaintenance
   },
+  { 
+    path: '/portal',
+    name: 'Portal',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Portal.vue')
+  }
+
 ]
 
 const router = new VueRouter({
