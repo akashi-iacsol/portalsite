@@ -13,7 +13,7 @@ export default new Vuex.Store({
     userEmployeeNumber:"",
     userLastName:"",
     userFirstName:"",
-    userDeparment: [],// departmentcode: 部署コード, department_name: 部署名
+    userDepartment: [],// departmentcode: 部署コード, department_name: 部署名
     userAuthorityCode: [],// authority_code: 権限コード
   },
   mutations: {
@@ -38,8 +38,8 @@ export default new Vuex.Store({
     setUserFirstName(state, val) {
       state.userFirstName = val
     },
-    setUserDeparment(state, val) {
-      state.userDeparment = val
+    setUserDepartment(state, val) {
+      state.userDepartment = val
     },
     setUserAuthorityCode(state, val) {
       state.userAuthorityCode = val
