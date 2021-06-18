@@ -48,19 +48,27 @@ export default {
   store,
   data() {
     return {
-      params: "",
+      paramsAD: "",
+      paramsDB: "",
       password: "",
       isError: false,
     };
   },
   methods: {
     login: async function () {
-      const path = "http://localhost:8080/api/auth";
-      this.params = new URLSearchParams();
-      this.params.append("samAccountName", this.userID);
-      this.params.append("password", this.password);
+      this.getAD();
+      if (!this.isError) {
+        this.getDB();
+        this.$router.push("/portal");
+      }
+    },
+    getAD: async function () {
+      const pathAD = "http://localhost:8080/api/auth";
+      this.paramsAD = new URLSearchParams();
+      this.paramsAD.append("samAccountName", this.userID);
+      this.paramsAD.append("password", this.password);
       await axios
-        .post(path, this.params)
+        .post(pathAD, this.paramsAD)
         .then((res) => {
           if (res.data[0][0] !== "error") {
             this.isLogin = true;
@@ -73,15 +81,41 @@ export default {
 
             attributeArray = res.data.find((item) => item[0] === "OU");
             this.userOU = attributeArray.slice(1, attributeArray.length);
-            // this.getDB();
-            this.$router.push("/portal");
           } else {
+            this.isLogin = false;
+            this.isError = true;
             this.userName = "";
             this.userOU = [];
-            this.isError = true;
           }
         })
         .catch((error) => {
+          this.isLogin = false;
+          this.isError = true;
+          console.log(error);
+        });
+    },
+    getDB: async function () {
+      const pathDB = "http://localhost:3000/login-user";
+      this.paramsDB = new URLSearchParams();
+      this.paramsDB.append("employee_id", this.userID);
+      await axios
+        .post(pathDB, this.paramsDB)
+        .then((res) => {
+          this.userEmployeeNumber = res.data.login_user.employee_number;
+          this.userLastName = res.data.login_user.employee_last_name;
+          this.userFirstName = res.data.login_user.employee_first_name;
+          this.userDepartment = res.data.login_user.department;
+          this.userAuthorityCode = res.data.login_user.authority_code;
+          alert(
+            res.data.login_user.employee_number +
+              res.data.login_user.employee_last_name +
+              res.data.login_user.employee_first_name +
+              res.data.login_user.department[0].department_name +
+              res.data.login_user.authority_code[0].authority_code
+          );
+        })
+        .catch((error) => {
+          alert(error);
           console.log(error);
         });
     },
@@ -119,12 +153,44 @@ export default {
         store.commit("setUserName", val);
       },
     },
+    userEmployeeNumber: {
+      get() {
+        return store.state.userEmployeeNumber;
+      },
+      set(val) {
+        store.commit("setUserEmployeeNumber", val);
+      },
+    },
+    userLastName: {
+      get() {
+        return store.state.userLastName;
+      },
+      set(val) {
+        store.commit("setUserLastName", val);
+      },
+    },
+    userFirstName: {
+      get() {
+        return store.state.userFirstName;
+      },
+      set(val) {
+        store.commit("setUserFirstName", val);
+      },
+    },
     userDepartment: {
       get() {
         return store.state.userDepartment;
       },
       set(val) {
         store.commit("setUserDepartment", val);
+      },
+    },
+    userAuthorityCode: {
+      get() {
+        return store.state.userAuthorityCode;
+      },
+      set(val) {
+        store.commit("setUserAuthorityCode", val);
       },
     },
   },
