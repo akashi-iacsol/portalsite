@@ -3,6 +3,7 @@
     <div class="login-header login-div">
       <img alt="iacsol logo" src="../assets/logo.png" class="login-logo" />
     </div>
+    
     <div class="container">
       <div class="login-box">
         <div class="login-div">
@@ -18,20 +19,20 @@
           <tr class="login-tr">
             <td>ユーザ名:</td>
             <td>
-              <input v-model="userID" @keyup.enter="login" />
+              <InputUserID v-model="userID" type="text" name="user-id" @keyup-enter="login" />
             </td>
           </tr>
           <tr class="login-tr">
             <td>パスワード:</td>
             <td>
-              <input v-model="password" type="password" @keyup.enter="login" />
+              <InputPassword v-model="form.password" type="password" name="password" @keyup-enter="login" />
             </td>
           </tr>
         </table>
 
         <br />
         <div class="login-div">
-          <button @click="login">ログイン</button>
+          <LoginButton type="button" name="login-button" value="ログイン" @click="login" />
         </div>
         <br />
       </div>
@@ -42,33 +43,47 @@
 <script>
 import axios from "axios";
 import store from "../store/index.js";
+import InputUserID from "../components/MyInput";
+import InputPassword from "../components/MyInput";
+import LoginButton from "../components/MyButton";
 
 export default {
   name: "Login",
   store,
+  components:{
+    InputUserID,
+    InputPassword,
+    LoginButton
+  },
   data() {
     return {
-      paramsAD: "",
-      paramsDB: "",
-      password: "",
+      form: {
+        password: "",
+      },
+      ad: {
+        params: "",
+      },
+      db: {
+        params: "",
+      },
       isError: false,
     };
   },
   methods: {
     login: async function () {
       this.getAD();
-      if (!this.isError) {
-        this.getDB();
-        this.$router.push("/portal");
-      }
+      // if (!this.isError) {
+      //   this.getDB();
+      //   this.$router.push("/portal");
+      // }
     },
     getAD: async function () {
       const pathAD = "http://localhost:8080/api/auth";
-      this.paramsAD = new URLSearchParams();
-      this.paramsAD.append("samAccountName", this.userID);
-      this.paramsAD.append("password", this.password);
+      this.ad.params = new URLSearchParams();
+      this.ad.params.append("samAccountName", this.userID);
+      this.ad.params.append("password", this.form.password);
       await axios
-        .post(pathAD, this.paramsAD)
+        .post(pathAD, this.ad.params)
         .then((res) => {
           if (res.data[0][0] !== "error") {
             this.isLogin = true;
@@ -81,6 +96,7 @@ export default {
 
             attributeArray = res.data.find((item) => item[0] === "OU");
             this.userOU = attributeArray.slice(1, attributeArray.length);
+            this.getDB();
           } else {
             this.isLogin = false;
             this.isError = true;
@@ -96,23 +112,18 @@ export default {
     },
     getDB: async function () {
       const pathDB = "http://localhost:3000/login-user";
-      this.paramsDB = new URLSearchParams();
-      this.paramsDB.append("employee_id", this.userID);
+      this.db.params = new URLSearchParams();
+      this.db.params.append("employee_id", this.userID);
       await axios
-        .post(pathDB, this.paramsDB)
+        .post(pathDB, this.db.params)
         .then((res) => {
           this.userEmployeeNumber = res.data.login_user.employee_number;
           this.userLastName = res.data.login_user.employee_last_name;
           this.userFirstName = res.data.login_user.employee_first_name;
           this.userDepartment = res.data.login_user.department;
           this.userAuthorityCode = res.data.login_user.authority_code;
-          alert(
-            res.data.login_user.employee_number +
-              res.data.login_user.employee_last_name +
-              res.data.login_user.employee_first_name +
-              res.data.login_user.department[0].department_name +
-              res.data.login_user.authority_code[0].authority_code
-          );
+
+          this.$router.push("/portal");
         })
         .catch((error) => {
           alert(error);
