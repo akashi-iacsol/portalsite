@@ -10,7 +10,11 @@ export default new Vuex.Store({
     userID: "",
     userOU: [],
     userName: "",
-    userDeparment: "",
+    userEmployeeNumber:"",
+    userLastName:"",
+    userFirstName:"",
+    userDeparment: [],// departmentcode: 部署コード, department_name: 部署名
+    userAuthorityCode: [],// authority_code: 権限コード
   },
   mutations: {
     setIsLogin(state, val) {
@@ -25,8 +29,20 @@ export default new Vuex.Store({
     setUserName(state, val) {
       state.userName = val
     },
+    setUserEmployeeNumber(state, val) {
+      state.userEmployeeNumber = val
+    },
+    setUserLastName(state, val) {
+      state.userLastName = val
+    },
+    setUserFirstName(state, val) {
+      state.userFirstName = val
+    },
     setUserDeparment(state, val) {
       state.userDeparment = val
+    },
+    setUserAuthorityCode(state, val) {
+      state.userAuthorityCode = val
     },
   },
   actions: {
