@@ -3,7 +3,7 @@
     <div class="wrapper">
       <MyHeader v-if="this.$route.path !== '/login'"></MyHeader>
       <MyAside v-if="this.$route.path !== '/login'"></MyAside>
-      <div class="content-wrapper">
+      <div v-bind:class="{'content-wrapper': this.$route.path !== '/login'}">
         <router-view></router-view>
       </div>
     </div>
