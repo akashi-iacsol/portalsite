@@ -43,6 +43,7 @@
 <script>
 import axios from "axios";
 import store from "../store/index.js";
+
 export default {
   name: "Login",
   store,
@@ -58,13 +59,9 @@ export default {
         params: "",
       },
       isError: false,
-      itemData: {},
     };
   },
   methods: {
-    SelectItem(event) {
-      this.itemData = event.itemData;
-    },
     login: async function () {
       this.getAD();
       // if (!this.isError) {
