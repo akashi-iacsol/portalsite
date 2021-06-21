@@ -3,8 +3,8 @@
     <div class="login-header login-div">
       <img alt="iacsol logo" src="../assets/logo.png" class="login-logo" />
     </div>
-    
-    <div class="container">
+
+    <div class="login-container">
       <div class="login-box">
         <div class="login-div">
           <h3 colspan="2">ログイン</h3>
@@ -19,20 +19,20 @@
           <tr class="login-tr">
             <td>ユーザ名:</td>
             <td>
-              <InputUserID v-model="userID" type="text" name="user-id" @keyup-enter="login" />
+              <input v-model="userID" type="text" name="user-id" @keyup.enter="login" />
             </td>
           </tr>
           <tr class="login-tr">
             <td>パスワード:</td>
             <td>
-              <InputPassword v-model="form.password" type="password" name="password" @keyup-enter="login" />
+              <input v-model="form.password" type="password" name="password" @keyup.enter="login" />
             </td>
           </tr>
         </table>
 
         <br />
         <div class="login-div">
-          <LoginButton type="button" name="login-button" value="ログイン" @click="login" />
+          <button type="button" name="login-button" @click="login">ログイン</button>
         </div>
         <br />
       </div>
@@ -43,18 +43,9 @@
 <script>
 import axios from "axios";
 import store from "../store/index.js";
-import InputUserID from "../components/MyInput";
-import InputPassword from "../components/MyInput";
-import LoginButton from "../components/MyButton";
-
 export default {
   name: "Login",
   store,
-  components:{
-    InputUserID,
-    InputPassword,
-    LoginButton
-  },
   data() {
     return {
       form: {
@@ -67,9 +58,13 @@ export default {
         params: "",
       },
       isError: false,
+      itemData: {},
     };
   },
   methods: {
+    SelectItem(event) {
+      this.itemData = event.itemData;
+    },
     login: async function () {
       this.getAD();
       // if (!this.isError) {
@@ -209,8 +204,16 @@ export default {
 </script>
 
 <style>
+.login {
+  background-color: lavenderblush;
+}
 .login-div {
   text-align: center;
+}
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .login-form {
   margin-left: auto;
