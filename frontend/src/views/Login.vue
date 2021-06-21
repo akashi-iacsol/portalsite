@@ -205,7 +205,7 @@ export default {
 
 <style>
 .login {
-  background-color: lavenderblush;
+  height:100vh;
 }
 .login-div {
   text-align: center;
