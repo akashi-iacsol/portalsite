@@ -62,7 +62,7 @@ export default {
     };
   },
   methods: {
-    login: async function () {
+    login() {
       this.getAD();
       // if (!this.isError) {
       //   this.getDB();
@@ -70,24 +70,26 @@ export default {
       // }
     },
     getAD: async function () {
-      const pathAD = "http://localhost:8080/api/auth";
+      const pathAD = "http://localhost:3000/ad-auth";
       this.ad.params = new URLSearchParams();
       this.ad.params.append("samAccountName", this.userID);
       this.ad.params.append("password", this.form.password);
       await axios
         .post(pathAD, this.ad.params)
         .then((res) => {
-          if (res.data[0][0] !== "error") {
+          if (!res.data.user["error"]) {
             this.isLogin = true;
             this.isError = false;
 
-            let attributeArray = [];
+            this.userName = res.data.user.displayName;
 
-            attributeArray = res.data.find((item) => item[0] === "DisplayName");
-            this.userName = attributeArray[1];
-
-            attributeArray = res.data.find((item) => item[0] === "OU");
-            this.userOU = attributeArray.slice(1, attributeArray.length);
+            this.userOU = [];
+            res.data.user.distinguishedName.split(",").forEach((item) => {
+              if (item.match(/^OU=/g)) {
+                this.userOU.push(item.slice(3));
+              }
+            });
+            
             this.getDB();
           } else {
             this.isLogin = false;
@@ -118,7 +120,6 @@ export default {
           this.$router.push("/portal");
         })
         .catch((error) => {
-          alert(error);
           console.log(error);
         });
     },
@@ -202,7 +203,7 @@ export default {
 
 <style>
 .login {
-  height:100vh;
+  height: 100vh;
 }
 .login-div {
   text-align: center;
