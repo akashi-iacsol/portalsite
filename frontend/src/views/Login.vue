@@ -1,8 +1,5 @@
 <template>
   <div class="login">
-    <div class="login-header login-div">
-      <img alt="iacsol logo" src="../assets/logo.png" class="login-logo" />
-    </div>
 
     <div class="login-container">
       <div class="login-box">
@@ -222,10 +219,6 @@ export default {
 }
 .login-header {
   text-align: left;
-}
-.login-logo {
-  width: 50px;
-  height: 50px;
 }
 .login-box {
   display: inline-block;
