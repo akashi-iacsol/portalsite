@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import createPersistedState from "vuex-persistedstate";
 
 Vue.use(Vuex)
 
@@ -9,7 +10,11 @@ export default new Vuex.Store({
     userID: "",
     userOU: [],
     userName: "",
-    userDeparment: "",
+    userEmployeeNumber:"",
+    userLastName:"",
+    userFirstName:"",
+    userDepartment: [],// departmentcode: 部署コード, department_name: 部署名
+    userAuthorityCode: [],// authority_code: 権限コード
   },
   mutations: {
     setIsLogin(state, val) {
@@ -24,12 +29,25 @@ export default new Vuex.Store({
     setUserName(state, val) {
       state.userName = val
     },
-    setUserDeparment(state, val) {
-      state.userDeparment = val
+    setUserEmployeeNumber(state, val) {
+      state.userEmployeeNumber = val
+    },
+    setUserLastName(state, val) {
+      state.userLastName = val
+    },
+    setUserFirstName(state, val) {
+      state.userFirstName = val
+    },
+    setUserDepartment(state, val) {
+      state.userDepartment = val
+    },
+    setUserAuthorityCode(state, val) {
+      state.userAuthorityCode = val
     },
   },
   actions: {
   },
   modules: {
-  }
+  },
+  plugins: [createPersistedState({ storage: window.sessionStorage }, { key: 'portalsite' },)]
 })

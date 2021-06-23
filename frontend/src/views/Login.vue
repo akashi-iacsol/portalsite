@@ -1,37 +1,35 @@
 <template>
   <div class="login">
-    <div class="header">
-      <img alt="iacsol logo" src="../assets/logo.png" class="logo" />
-    </div>
-    <div class="container">
-      <div class="box">
-        <div>
+
+    <div class="login-container">
+      <div class="login-box">
+        <div class="login-div">
           <h3 colspan="2">ログイン</h3>
         </div>
 
-        <div class="login-error">
-          <a v-if="isError">ログインできませんでした。</a>
+        <div class="login-div">
+          <a class="login-error" v-if="isError">ログインできませんでした。</a>
           <br v-if="!isError" />
         </div>
 
-        <table class="form">
-          <tr>
+        <table class="login-form">
+          <tr class="login-tr">
             <td>ユーザ名:</td>
             <td>
-              <input v-model="userID" @keyup.enter="login" />
+              <input v-model="userID" type="text" name="user-id" @keyup.enter="login" />
             </td>
           </tr>
-          <tr>
+          <tr class="login-tr">
             <td>パスワード:</td>
             <td>
-              <input v-model="password" type="password" @keyup.enter="login" />
+              <input v-model="form.password" type="password" name="password" @keyup.enter="login" />
             </td>
           </tr>
         </table>
 
         <br />
-        <div>
-          <button @click="login">ログイン</button>
+        <div class="login-div">
+          <button type="button" name="login-button" @click="login">ログイン</button>
         </div>
         <br />
       </div>
@@ -48,38 +46,75 @@ export default {
   store,
   data() {
     return {
-      params: "",
-      password: "",
+      form: {
+        password: "",
+      },
+      ad: {
+        params: "",
+      },
+      db: {
+        params: "",
+      },
       isError: false,
     };
   },
   methods: {
-    login: async function () {
-      const path = "http://localhost:8080/api/auth";
-      this.params = new URLSearchParams();
-      this.params.append("samAccountName", this.userID);
-      this.params.append("password", this.password);
+    login() {
+      this.getAD();
+      // if (!this.isError) {
+      //   this.getDB();
+      //   this.$router.push("/portal");
+      // }
+    },
+    getAD: async function () {
+      const pathAD = "http://localhost:3000/ad-auth";
+      this.ad.params = new URLSearchParams();
+      this.ad.params.append("samAccountName", this.userID);
+      this.ad.params.append("password", this.form.password);
       await axios
-        .post(path, this.params)
+        .post(pathAD, this.ad.params)
         .then((res) => {
-          if (res.data[0][0] !== "error") {
+          if (!res.data.user["error"]) {
             this.isLogin = true;
             this.isError = false;
 
-            let attributeArray = [];
+            this.userName = res.data.user.displayName;
 
-            attributeArray = res.data.find((item) => item[0] === "DisplayName");
-            this.userName = attributeArray[1];
-
-            attributeArray = res.data.find((item) => item[0] === "OU");
-            this.userOU = attributeArray.slice(1, attributeArray.length);
-            // this.getDB();
-            this.$router.push("/");
+            this.userOU = [];
+            res.data.user.distinguishedName.split(",").forEach((item) => {
+              if (item.match(/^OU=/g)) {
+                this.userOU.push(item.slice(3));
+              }
+            });
+            
+            this.getDB();
           } else {
+            this.isLogin = false;
+            this.isError = true;
             this.userName = "";
             this.userOU = [];
-            this.isError = true;
           }
+        })
+        .catch((error) => {
+          this.isLogin = false;
+          this.isError = true;
+          console.log(error);
+        });
+    },
+    getDB: async function () {
+      const pathDB = "http://localhost:3000/login-user";
+      this.db.params = new URLSearchParams();
+      this.db.params.append("employee_id", this.userID);
+      await axios
+        .post(pathDB, this.db.params)
+        .then((res) => {
+          this.userEmployeeNumber = res.data.login_user.employee_number;
+          this.userLastName = res.data.login_user.employee_last_name;
+          this.userFirstName = res.data.login_user.employee_first_name;
+          this.userDepartment = res.data.login_user.department;
+          this.userAuthorityCode = res.data.login_user.authority_code;
+
+          this.$router.push("/portal");
         })
         .catch((error) => {
           console.log(error);
@@ -119,6 +154,30 @@ export default {
         store.commit("setUserName", val);
       },
     },
+    userEmployeeNumber: {
+      get() {
+        return store.state.userEmployeeNumber;
+      },
+      set(val) {
+        store.commit("setUserEmployeeNumber", val);
+      },
+    },
+    userLastName: {
+      get() {
+        return store.state.userLastName;
+      },
+      set(val) {
+        store.commit("setUserLastName", val);
+      },
+    },
+    userFirstName: {
+      get() {
+        return store.state.userFirstName;
+      },
+      set(val) {
+        store.commit("setUserFirstName", val);
+      },
+    },
     userDepartment: {
       get() {
         return store.state.userDepartment;
@@ -127,40 +186,43 @@ export default {
         store.commit("setUserDepartment", val);
       },
     },
+    userAuthorityCode: {
+      get() {
+        return store.state.userAuthorityCode;
+      },
+      set(val) {
+        store.commit("setUserAuthorityCode", val);
+      },
+    },
   },
 };
 </script>
 
 <style>
-div {
+.login {
+  height: 100vh;
+}
+.login-div {
   text-align: center;
 }
-table {
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.login-form {
   margin-left: auto;
   margin-right: auto;
 }
-tr {
+.login-tr {
   height: 3em;
 }
-.header {
+.login-header {
   text-align: left;
 }
-.logo {
-  width: 50px;
-  height: 50px;
-}
-.container {
-  -webkit-transform: translate(-50%, -50%);
-  -moz-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  -o-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  position: absolute;
-  top: 50%;
-  left: 50%;
-}
-.box {
+.login-box {
   display: inline-block;
+  background-color: ghostwhite;
   padding: 0 3em;
   border: solid 3px steelblue;
   border-radius: 10px;
