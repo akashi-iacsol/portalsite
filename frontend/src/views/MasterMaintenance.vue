@@ -10,7 +10,7 @@
             <div class="box-body">
               <div class="row space-top">
                 <div class="col-md-4 col-md-offset-1">
-                  <button type="button" class="btn btn-block btn-primary btn-lg">社員マスタ</button>
+                  <button type="button" class="btn btn-block btn-primary btn-lg" @click="EmpMaintenance">社員マスタ</button>
                 </div>
                 <div class="col-md-1"/>
                 <div class="col-md-4 col-md-offset-1">
@@ -50,3 +50,13 @@
   margin-bottom: 50px;
 }
 </style>
+<script>
+
+export default {
+  methods: {
+    EmpMaintenance() {
+      this.$router.push("/empMaintenance")
+    }
+  }
+}
+</script>

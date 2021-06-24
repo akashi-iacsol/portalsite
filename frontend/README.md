@@ -1,24 +1,13 @@
 # portalsite
 
-## Project setup
-```
+##　masterからpullした際に行う手順
+
+フロントエンド
+cd frontend
 npm install
-```
-
-### Compiles and hot-reloads for development
-```
 npm run serve
-```
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+バックエンド
+cd backend
+npm install
+npm start
