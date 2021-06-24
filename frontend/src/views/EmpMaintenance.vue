@@ -52,5 +52,7 @@ Button {
 }
 .contents {
   margin-top: 60px;
+}.EmpMaintenance{
+  text-align: center;
 }
 </style>
