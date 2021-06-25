@@ -29,7 +29,9 @@ export default {
     MySelectListItem,
   },
   data() {
-    return { isHide: false, radio: null };
+    return {
+      isHide: false,
+    };
   },
   props: {
     item: {
