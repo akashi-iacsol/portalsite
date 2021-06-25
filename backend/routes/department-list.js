@@ -58,7 +58,7 @@ async function selectItemChildren(client, higher_department_code) {
         name: item.department_name,
         forSelect: true,
       };
-      const sub_array = await selectDepartmentNext(client, custom_item.id);
+      const sub_array = await selectItemChildren(client, custom_item.id);
       if (sub_array.length != 0) {
         custom_item.array = sub_array
       }
