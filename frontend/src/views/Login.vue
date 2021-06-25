@@ -1,6 +1,5 @@
 <template>
   <div class="login">
-
     <div class="login-container">
       <div class="login-box">
         <div class="login-div">
@@ -59,66 +58,57 @@ export default {
     };
   },
   methods: {
-    login() {
-      this.getAD();
-      // if (!this.isError) {
-      //   this.getDB();
-      //   this.$router.push("/portal");
-      // }
+    login: async function() {
+      await this.getAD();
+      if (!this.isError) {
+        await this.getDB();
+        await this.$router.push("/portal");
+      }
     },
     getAD: async function () {
       const pathAD = "http://localhost:3000/ad-auth";
       this.ad.params = new URLSearchParams();
       this.ad.params.append("samAccountName", this.userID);
       this.ad.params.append("password", this.form.password);
-      await axios
-        .post(pathAD, this.ad.params)
-        .then((res) => {
-          if (!res.data.user["error"]) {
-            this.isLogin = true;
-            this.isError = false;
+      try {
+        const res = await axios.post(pathAD, this.ad.params);
 
-            this.userName = res.data.user.displayName;
-
-            this.userOU = [];
-            res.data.user.distinguishedName.split(",").forEach((item) => {
-              if (item.match(/^OU=/g)) {
-                this.userOU.push(item.slice(3));
-              }
-            });
-            
-            this.getDB();
-          } else {
-            this.isLogin = false;
-            this.isError = true;
-            this.userName = "";
-            this.userOU = [];
-          }
-        })
-        .catch((error) => {
+        if (!res.data.user["error"]) {
+          this.isLogin = true;
+          this.isError = false;
+          this.userName = res.data.user.displayName;
+          this.userOU = [];
+          res.data.user.distinguishedName.split(",").forEach((item) => {
+            if (item.match(/^OU=/g)) {
+              this.userOU.push(item.slice(3));
+            }
+          });
+        } else {
           this.isLogin = false;
           this.isError = true;
-          console.log(error);
-        });
+          this.userName = "";
+          this.userOU = [];
+        }
+      } catch (error) {
+        this.isLogin = false;
+        this.isError = true;
+        console.log(error);
+      }
     },
     getDB: async function () {
       const pathDB = "http://localhost:3000/login-user";
       this.db.params = new URLSearchParams();
       this.db.params.append("employee_id", this.userID);
-      await axios
-        .post(pathDB, this.db.params)
-        .then((res) => {
-          this.userEmployeeNumber = res.data.login_user.employee_number;
-          this.userLastName = res.data.login_user.employee_last_name;
-          this.userFirstName = res.data.login_user.employee_first_name;
-          this.userDepartment = res.data.login_user.department;
-          this.userAuthorityCode = res.data.login_user.authority_code;
-
-          this.$router.push("/portal");
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      try {
+        const res = await axios.post(pathDB, this.db.params);
+        this.userEmployeeNumber = res.data.login_user.employee_number;
+        this.userLastName = res.data.login_user.employee_last_name;
+        this.userFirstName = res.data.login_user.employee_first_name;
+        this.userDepartment = res.data.login_user.department;
+        this.userAuthorityCode = res.data.login_user.authority_code;
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
   computed: {
