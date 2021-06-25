@@ -207,9 +207,6 @@ export default {
 .login-tr {
   height: 3em;
 }
-.login-header {
-  text-align: left;
-}
 .login-box {
   display: inline-block;
   background-color: ghostwhite;
