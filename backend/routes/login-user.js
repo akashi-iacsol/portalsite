@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var pool = require('../postgres/pool');
+var conf = require('../config/default.json');
 
 let employee_number = "";
 let employee_last_name = "";
@@ -42,7 +43,7 @@ router.post('/', function (req, res) {
 });
 
 function sendJson(res) {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:8081');
+  res.header('Access-Control-Allow-Origin', conf.response_header.acao);
   res.json({
     login_user: {
       employee_number: employee_number,
