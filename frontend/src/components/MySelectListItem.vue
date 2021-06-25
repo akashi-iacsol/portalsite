@@ -59,18 +59,15 @@ export default {
   },
   computed: {
     open() {
-      // 子item がそもそもなければ何も表示しない
-      if (!this.item.array) {
+      if (this.item.array) {
+        if (this.isHide) {
+          return "▲";
+        } else {
+          return "▼";
+        }
+      } else {
         return "";
       }
-
-      // 子item があり、show ではない時は開けるので + を表示する
-      if (this.item.array && !this.isHide) {
-        return "▼";
-      }
-
-      // それ以外は - 閉じるボタンを表示する
-      return "▲";
     },
   },
   watch: {
