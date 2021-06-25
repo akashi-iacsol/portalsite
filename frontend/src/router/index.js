@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import MasterMaintenance from '../views/MasterMaintenance.vue'
 import Login from '../views/Login.vue'
+import Test from '../views/Test.vue'
 // import store from "../store/index.js";
 
 
@@ -19,7 +20,7 @@ const routes = [
     name: 'MasterMaintenance',
     component: MasterMaintenance
   },
-  { 
+  {
     path: '/portal',
     name: 'Portal',
     component: () => import(/* webpackChunkName: "about" */ '../views/Portal.vue')
@@ -29,10 +30,15 @@ const routes = [
     name: 'Login',
     component: Login
   },
-  { 
+  {
     path: '/empMaintenance',
     name: 'EmpMaintenance',
-    component: () => import ('../views/EmpMaintenance.vue')
+    component: () => import('../views/EmpMaintenance.vue')
+  },
+  {
+    path: '/test',
+    name: 'Test',
+    component: Test
   },
 ]
 
