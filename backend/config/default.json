@@ -1,0 +1,20 @@
+{
+  "active_directory": {
+    "host": "192.168.129.3",
+    "port": "389",
+    "dc_2ld": "iacsol",
+    "dc_tld": "local"
+  },
+
+  "postgresql": {
+    "database": "postgres",
+    "host": "localhost",
+    "port": "5432",
+    "user": "postgres",
+    "password": "0978781"
+  },
+
+  "response_header": {
+    "acao": "http://localhost:8080"
+  }
+}
