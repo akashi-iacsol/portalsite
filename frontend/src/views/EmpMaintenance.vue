@@ -1,58 +1,65 @@
 <template>
-  <div class="EmpMaintenance">
+  <div>
     <section class="content-header">
       <h1>社員マスタメンテナンス画面</h1>
     </section>
-    <section class="contents">
-      個別データ更新
-      <table class="dataupdate">
-        <tr>
-          <Button>新規登録</Button>
-          <Button>更新</Button>
-          <Button>削除</Button>
-        </tr>
-      </table>
-      マスタ一括更新
-      <table class="alldataupdate">
-        <tr>
-          <td rowspan="2"><Button class="csv">.CSVダウンロード</Button></td>
-          <td><Button>ファイル選択</Button></td>
-        </tr>
-        <tr>
-          <td><Button class="csv">.CSVアップロード</Button></td>
-        </tr>
-      </table>
-      <Button>戻る</Button>
-    </section>
+      <section class="content">
+        <h5 align="center">個別データ更新</h5>
+        <div class="row text-center">
+          <div class="col-md-12">
+            <div class="box">
+              <div class="box-body">
+                <div class="row space-top space-bottom">
+                  <div class="col-md-2 col-md-offset-2">
+                    <button type="button" class="btn btn-block btn-primary btn-lg">新規登録</button>
+                  </div>
+                  <div class="col-md-2 col-md-offset-1">
+                    <button type="button" class="btn btn-block btn-primary btn-lg">更新</button>
+                  </div>
+                  <div class="col-md-2 col-md-offset-1">
+                    <button type="button" class="btn btn-block btn-primary btn-lg">削除</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h5 align="center">マスタ一括更新</h5>
+        <div class="row text-center">
+          <div class="col-md-12">
+            <div class="box">
+              <div class="box-body">
+                <div class="row space-top">
+                  <div class="col-md-3 col-md-offset-6">
+                    <button type="button" class="btn btn-block btn-success btn-lg">ファイル選択</button>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-3 col-md-offset-2">
+                    <button type="button" class="btn btn-block btn-primary btn-lg">.CSVダウンロード</button>
+                  </div>
+                </div>
+                <div class="row space-bottom">
+                  <div class="col-md-5"/>
+                  <div class="col-md-3 col-md-offset-1">
+                    <button type="button" class="btn btn-block btn-success btn-lg">.CSVアップロード</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-md-offset-4 space-top">
+          <button type="button" class="btn  btn-block btn-primary btn-lg">戻る</button>
+        </div>
+      </section>
   </div>
 </template>
 <style>
-Button {
-  height: 40px;
-  width: 200px;
-  font-size: 20px;
-  cursor: pointer;
-  margin: 10px;
-  margin-top: 35px;
-  margin-bottom: 35px;
+.space-top {
+  margin-top: 40px;
 }
-.csv {
-  border-radius: 5px;
-}
-.dataupdate {
-  border: solid 1px;
-  width: 55%;
-  margin: auto;
-  margin-bottom: 60px;
-}
-.alldataupdate {
-  border: solid 1px;
-  width: 55%;
-  margin: auto;
-}
-.contents {
-  margin-top: 60px;
-}.EmpMaintenance{
-  text-align: center;
+.space-bottom {
+  margin-bottom: 40px;
 }
 </style>
