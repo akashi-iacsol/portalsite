@@ -30,7 +30,7 @@
                 </div>
               </div>
             </div>
-            <button type="button" class="btn btn-danger btn-lg">マスタメンテナンス</button>
+            <router-link to="MasterMaintenance"><button type="button" class="btn btn-danger btn-lg">マスタメンテナンス</button></router-link>
             </div>
         </div>
       </section>

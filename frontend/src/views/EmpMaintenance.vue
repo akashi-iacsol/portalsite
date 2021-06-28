@@ -50,11 +50,21 @@
           </div>
         </div>
         <div class="col-md-3 col-md-offset-4 space-top">
-          <button type="button" class="btn  btn-block btn-primary btn-lg">戻る</button>
+          <button type="button" class="btn  btn-block btn-primary btn-lg" @click="back()">戻る</button>
         </div>
       </section>
   </div>
 </template>
+<script>
+export default {
+  methods: {
+    back() {
+      this.$router.go(-1);
+    }
+  }
+}
+</script>
+
 <style>
 .space-top {
   margin-top: 40px;
